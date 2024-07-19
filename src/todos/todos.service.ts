@@ -35,7 +35,6 @@ export class TodosService {
   }
 
   async update(id: number, updateTodoDto: UpdateTodoDto): Promise<Todo> {
-    // const todo = await this.todosRepository.findOne({ where: { id } });
     const todo = await this.findOne(id);
 
     if (!todo) {
@@ -47,5 +46,20 @@ export class TodosService {
     todo.isCompleted = isCompleted;
 
     return await this.todosRepository.save(todo);
+  }
+
+  async delete(id: number): Promise<{ message: string; deletedTodo: Todo }> {
+    const todo = await this.findOne(id);
+
+    if (!todo) {
+      throw new NotFoundException(`Todo with ID ${id} not found`);
+    }
+
+    await this.todosRepository.delete(id);
+
+    return {
+      message: `Todo with ID ${id} has been successfully deleted`,
+      deletedTodo: todo,
+    };
   }
 }
