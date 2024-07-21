@@ -7,6 +7,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Install deps
-        run: yarn ci
+        run: yarn install
       - name: Lint
         run: yarn lint
