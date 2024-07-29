@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { configSchemaValidation } from './config.schema';
 import { TodosModule } from './todos/todos.module';
+import { IamModule } from './iam/iam.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { TodosModule } from './todos/todos.module';
     }),
     UsersModule,
     TodosModule,
+    IamModule,
   ],
   controllers: [AppController],
   providers: [AppService],
