@@ -21,6 +21,7 @@ export class AuthenticationController {
   signIn(@Body() signInDto: SignInDto) {
     return this.authService.signIn(signInDto);
   }
+
   @HttpCode(HttpStatus.OK)
   @Post('refresh-tokens')
   refreshTokens(@Body() refreshTokenDto: RefreshTokenDto) {
