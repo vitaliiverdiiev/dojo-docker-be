@@ -14,6 +14,8 @@ import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { ActiveUser } from 'src/iam/decorators/active-user.decorator';
 import { ActiveUserData } from 'src/iam/interfaces/active-user-data.interface';
+import { Roles } from 'src/iam/authorization/decorators/role.decorator';
+import { Role } from 'src/users/enums/role.enum';
 
 @Controller('todos')
 export class TodosController {
@@ -29,11 +31,13 @@ export class TodosController {
     return this.todosService.findOne(id);
   }
 
+  @Roles(Role.Admin)
   @Post()
   async create(@Body() createTodoDto: CreateTodoDto): Promise<Todo> {
     return this.todosService.create(createTodoDto);
   }
 
+  @Roles(Role.Admin)
   @Patch(':id')
   async update(
     @Param('id') id: number,
@@ -42,6 +46,7 @@ export class TodosController {
     return this.todosService.update(id, updateTodoDto);
   }
 
+  @Roles(Role.Admin)
   @Delete(':id')
   async deleteTodo(
     @Param('id', ParseIntPipe) id: number,
