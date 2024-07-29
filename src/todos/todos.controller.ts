@@ -12,12 +12,15 @@ import { Todo } from './todo.entity';
 import { TodosService } from './todos.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
+import { ActiveUser } from 'src/iam/decorators/active-user.decorator';
+import { ActiveUserData } from 'src/iam/interfaces/active-user-data.interface';
 
 @Controller('todos')
 export class TodosController {
   constructor(private readonly todosService: TodosService) {}
   @Get()
-  async findAll(): Promise<Todo[]> {
+  async findAll(@ActiveUser() user: ActiveUserData): Promise<Todo[]> {
+    console.log({ user });
     return this.todosService.findAll();
   }
 
