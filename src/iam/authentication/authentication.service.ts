@@ -53,7 +53,7 @@ export class AuthenticationService {
       this.signToken<Partial<ActiveUserData>>(
         user.id,
         this.jwtConfiguration.accessTokenTtl,
-        { email: user.email, role: user.role, permissions: user.permissions },
+        { email: user.email, role: user.role },
       ),
       this.signToken(user.id, this.jwtConfiguration.refreshTokenTtl, {
         refreshTokenId,
@@ -131,6 +131,6 @@ export class AuthenticationService {
       throw new UnauthorizedException('Password does not match');
     }
 
-    return await this.generateTokens(user);
+    return { token: await this.generateTokens(user), user };
   }
 }

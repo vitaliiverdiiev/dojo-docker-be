@@ -1,9 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Role } from './enums/role.enum';
-import {
-  Permission,
-  PermissionType,
-} from 'src/iam/authorization/permission.type';
+import { BlogPost } from 'src/blog-posts/blog-post.entity';
+import { Todo } from 'src/todos/todo.entity';
 
 @Entity()
 export class User {
@@ -28,6 +26,9 @@ export class User {
   @Column({ enum: Role, default: Role.User })
   role: Role;
 
-  @Column({ enum: Permission, default: [], type: 'json' })
-  permissions: PermissionType[];
+  @OneToMany(() => BlogPost, (blogPost) => blogPost.author)
+  blogPosts: BlogPost[];
+
+  @OneToMany(() => Todo, (todo) => todo.author)
+  todos: Todo[];
 }

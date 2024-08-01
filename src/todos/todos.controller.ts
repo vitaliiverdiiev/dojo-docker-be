@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Request,
 } from '@nestjs/common';
 import { Todo } from './todo.entity';
 import { TodosService } from './todos.service';
@@ -22,10 +23,14 @@ import { Permissions } from 'src/iam/authorization/decorators/permissions.decora
 @Controller('todos')
 export class TodosController {
   constructor(private readonly todosService: TodosService) {}
+
   @Get()
-  async findAll(@ActiveUser() user: ActiveUserData): Promise<Todo[]> {
+  async findAll(
+    @ActiveUser() user: ActiveUserData,
+    @Request() req: Request,
+  ): Promise<Todo[]> {
     console.log({ user });
-    return this.todosService.findAll();
+    return this.todosService.findAll((req as any).user.sub);
   }
 
   @Get(':id')
@@ -36,8 +41,15 @@ export class TodosController {
   // @Roles(Role.Admin)
   @Permissions(Permission.CreateTodo)
   @Post()
-  async create(@Body() createTodoDto: CreateTodoDto): Promise<Todo> {
-    return this.todosService.create(createTodoDto);
+  async create(
+    @Body() createTodoDto: CreateTodoDto,
+    @Request() req: Request,
+  ): Promise<Todo> {
+    console.log('!!! HARDIK !!!', {
+      requestik: (req as any).user,
+      bodiushka: createTodoDto,
+    });
+    return this.todosService.create(createTodoDto, (req as any).user.sub);
   }
 
   @Roles(Role.Admin)

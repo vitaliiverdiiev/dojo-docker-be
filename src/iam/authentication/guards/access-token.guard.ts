@@ -34,6 +34,7 @@ export class AccessTokenGuard implements CanActivate {
 
       request[REQUEST_USER_KEY] = payload; // Assign the payload to the request object
       console.log('Payload:', payload); // Debugging statement to log the payload
+      console.log('Request Key:', request[REQUEST_USER_KEY]); // Debugging statement to log the payload
     } catch (err) {
       console.error('Token validation error:', err); // Debugging statement to log the error
       throw new UnauthorizedException('Invalid token');

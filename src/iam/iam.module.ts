@@ -14,6 +14,7 @@ import { AuthenticationGuard } from './authentication/guards/authentication/auth
 import { RefreshTokenIdsStorage } from './authentication/refresh-token-ids.storage';
 // import { RolesGuard } from './authorization/guards/roles.guard';
 import { PermissionsGuard } from './authorization/guards/permissions.guard';
+import { RolesGuard } from './authorization/guards/roles.guard';
 
 @Module({
   imports: [
@@ -24,8 +25,8 @@ import { PermissionsGuard } from './authorization/guards/permissions.guard';
   providers: [
     { provide: HashingService, useClass: BcryptService },
     { provide: APP_GUARD, useClass: AuthenticationGuard },
-    { provide: APP_GUARD, useClass: PermissionsGuard },
-    // { provide: APP_GUARD, useClass: RolesGuard },
+    // { provide: APP_GUARD, useClass: PermissionsGuard },
+    { provide: APP_GUARD, useClass: RolesGuard },
     AccessTokenGuard,
     RefreshTokenIdsStorage,
     AuthenticationService,
