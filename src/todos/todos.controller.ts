@@ -19,6 +19,7 @@ import { Roles } from 'src/iam/authorization/decorators/role.decorator';
 import { Role } from 'src/users/enums/role.enum';
 import { Permission } from 'src/iam/authorization/permission.type';
 import { Permissions } from 'src/iam/authorization/decorators/permissions.decorator';
+import { UpdateTodosOrderDto } from './dto/update-todo-order.dto';
 
 @Controller('todos')
 export class TodosController {
@@ -59,6 +60,13 @@ export class TodosController {
     @Body() updateTodoDto: UpdateTodoDto,
   ): Promise<Todo> {
     return this.todosService.update(id, updateTodoDto);
+  }
+
+  @Post('update-order')
+  async updateOrder(
+    @Body() updateTodosOrderDto: UpdateTodosOrderDto,
+  ): Promise<void> {
+    return this.todosService.updateOrder(updateTodosOrderDto);
   }
 
   // @Roles(Role.Admin)

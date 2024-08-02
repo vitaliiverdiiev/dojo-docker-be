@@ -1,5 +1,11 @@
 import { User } from 'src/users/user.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Generated,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Todo {
@@ -12,6 +18,10 @@ export class Todo {
   @Column({ default: false })
   isCompleted: boolean;
 
-  @ManyToOne(() => User, (user) => user.todos)
+  @ManyToOne(() => User, (user) => user.todos, { eager: true })
   author: User;
+
+  @Generated('increment')
+  @Column()
+  orderIndex: number;
 }

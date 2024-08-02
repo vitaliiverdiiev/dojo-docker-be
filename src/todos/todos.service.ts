@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { User } from 'src/users/user.entity';
+import { UpdateTodosOrderDto } from './dto/update-todo-order.dto';
 
 @Injectable()
 export class TodosService {
@@ -16,11 +17,17 @@ export class TodosService {
   ) {}
 
   async findAll(id: number): Promise<Todo[]> {
-    return await this.todosRepository.find({ where: { author: { id } } });
+    return await this.todosRepository.find({
+      where: { author: { id } },
+      order: { orderIndex: 'ASC' }, // Sorting by orderIndex in ascending order
+    });
   }
 
   async findOne(id: number): Promise<Todo> {
-    const todo = await this.todosRepository.findOne({ where: { id } });
+    const todo = await this.todosRepository.findOne({
+      where: { id },
+      relations: ['author'],
+    });
 
     if (!todo) {
       throw new NotFoundException(`Todo with ID ${id} not found`);
@@ -41,10 +48,6 @@ export class TodosService {
       author: user,
     });
 
-    // const todo = new Todo();
-    // const { title } = createTodoDto;
-    // todo.title = title;
-
     return await this.todosRepository.save(todo);
   }
 
@@ -60,6 +63,25 @@ export class TodosService {
     todo.isCompleted = isCompleted;
 
     return await this.todosRepository.save(todo);
+  }
+
+  async updateOrder(updateTodosOrderDto: UpdateTodosOrderDto): Promise<void> {
+    const queryRunner =
+      this.todosRepository.manager.connection.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      for (const { id, orderIndex } of updateTodosOrderDto.todos) {
+        await queryRunner.manager.update(Todo, id, { orderIndex });
+      }
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   async delete(id: number): Promise<{ message: string; deletedTodo: Todo }> {

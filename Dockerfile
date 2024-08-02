@@ -2,7 +2,7 @@
 
 FROM node:20.15.1-alpine AS base
 WORKDIR /app
-COPY ["package.json", "yarn.lock*", "./"] 
+COPY ["package.json", "yarn.lock*", "./"]
 
 # DEVELOPMENT
 FROM base AS development
