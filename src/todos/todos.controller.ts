@@ -20,24 +20,11 @@ import { Role } from 'src/users/enums/role.enum';
 import { Permission } from 'src/iam/authorization/permission.type';
 import { Permissions } from 'src/iam/authorization/decorators/permissions.decorator';
 import { UpdateTodosOrderDto } from './dto/update-todo-order.dto';
+import { IMeta } from 'src/models/interfaces/IMeta';
 
 @Controller('todos')
 export class TodosController {
   constructor(private readonly todosService: TodosService) {}
-
-  @Get()
-  async findAll(
-    @ActiveUser() user: ActiveUserData,
-    @Request() req: Request,
-  ): Promise<Todo[]> {
-    console.log({ user });
-    return this.todosService.findAll((req as any).user.sub);
-  }
-
-  @Get(':id')
-  async findOne(@Param('id') id: number): Promise<Todo> {
-    return this.todosService.findOne(id);
-  }
 
   // @Roles(Role.Admin)
   @Permissions(Permission.CreateTodo)
@@ -53,20 +40,39 @@ export class TodosController {
     return this.todosService.create(createTodoDto, (req as any).user.sub);
   }
 
-  @Roles(Role.Admin)
+  @Get()
+  async findAll(
+    @ActiveUser() user: ActiveUserData,
+    @Request() req: Request,
+  ): Promise<{ todos: Todo[]; meta: IMeta }> {
+    console.log({ user });
+    return this.todosService.findAll((req as any).user.sub);
+  }
+
+  @Get(':id')
+  async findOne(@Param('id') id: number): Promise<Todo> {
+    return this.todosService.findOne(id);
+  }
+
+  @Roles(Role.User)
   @Patch(':id')
   async update(
     @Param('id') id: number,
     @Body() updateTodoDto: UpdateTodoDto,
+    @Request() req: Request,
   ): Promise<Todo> {
-    return this.todosService.update(id, updateTodoDto);
+    return this.todosService.update(id, updateTodoDto, (req as any).user.sub);
   }
 
   @Post('update-order')
   async updateOrder(
     @Body() updateTodosOrderDto: UpdateTodosOrderDto,
+    @Request() req: Request,
   ): Promise<void> {
-    return this.todosService.updateOrder(updateTodosOrderDto);
+    return this.todosService.updateOrder(
+      updateTodosOrderDto,
+      (req as any).user.sub,
+    );
   }
 
   // @Roles(Role.Admin)

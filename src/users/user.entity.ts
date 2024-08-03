@@ -1,13 +1,11 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { Role } from './enums/role.enum';
 import { BlogPost } from 'src/blog-posts/blog-post.entity';
 import { Todo } from 'src/todos/todo.entity';
+import { DbEntity } from 'src/entities/DbEntity';
 
 @Entity()
-export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class User extends DbEntity {
   @Column({ nullable: true })
   firstName: string;
 
