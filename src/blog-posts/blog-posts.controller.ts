@@ -6,14 +6,11 @@ import {
   Param,
   Delete,
   Put,
-  Req,
   Request,
 } from '@nestjs/common';
 import { BlogPostsService } from './blog-posts.service';
 import { CreateBlogPostDto } from './dto/create-blog-post.dto';
 import { UpdateBlogPostDto } from './dto/update-blog-post.dto';
-import { User } from 'src/users/user.entity';
-import { Permissions } from 'src/iam/authorization/decorators/permissions.decorator';
 import { Role } from 'src/users/enums/role.enum';
 import { Roles } from 'src/iam/authorization/decorators/role.decorator';
 // import { JwtAuthGuard } from '../auth/jwt-auth.guard'; // Assuming JWT auth guard
