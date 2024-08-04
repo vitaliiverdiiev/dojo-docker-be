@@ -6,9 +6,8 @@
   "private": true,
   "license": "UNLICENSED",
   "engines": {
-  "npm": ">=8.0.0 <9.0.0",
-  "node": ">=20.0.0 <21"
-},
+    "node": "21.7.1"
+  },
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
