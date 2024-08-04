@@ -29,7 +29,7 @@ import { BlogPostsModule } from './blog-posts/blog-posts.module';
         autoLoadEntities: true,
         synchronize: true,
         ssl: {
-          rejectUnauthorized: false
+          rejectUnauthorized: false,
         },
       }),
     }),
