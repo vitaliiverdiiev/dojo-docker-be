@@ -11,10 +11,10 @@
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-   "start": "STAGE=production node dist/main.js",
-    "start:dev": "STAGE=production ts-node src/main.ts",
+    "start": "node dist/main.js",
+    "start:dev": "STAGE=development nest start --watch",
     "start:debug": "STAGE=development nest start --debug --watch",
-    "start:prod": "STAGE=production node dist/main",
+    "start:prod": "STAGE=production node dist/main.js",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "STAGE=development jest",
     "test:watch": "STAGE=development jest --watch",
