@@ -2,7 +2,7 @@ name: NestJS-Backend:CI
 
 on:
   push:
-    branches: ['feature/ci-cd-testing']  # Trigger this workflow when there is a push to the 'main' branch
+    branches: ['main']  # Trigger this workflow when there is a push to the 'main' branch
 
 jobs:
   build:
