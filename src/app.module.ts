@@ -20,6 +20,7 @@ import { BlogPostsModule } from './blog-posts/blog-posts.module';
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
         type: 'postgres',
+        url: configService.get<string>('DATABASE_URL'),
         host: configService.get('DB_HOST'),
         port: configService.get('DB_PORT'),
         username: configService.get('DB_USERNAME'),
@@ -27,6 +28,9 @@ import { BlogPostsModule } from './blog-posts/blog-posts.module';
         database: configService.get('DB_DATABASE'),
         autoLoadEntities: true,
         synchronize: true,
+        ssl: {
+          rejectUnauthorized: false
+        },
       }),
     }),
     UsersModule,
