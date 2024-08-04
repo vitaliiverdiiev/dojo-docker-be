@@ -25,6 +25,7 @@ export class RefreshTokenIdsStorage
         port: this.configService.get('REDIS_PORT'),
         password: this.configService.get<string>('REDIS_PASSWORD'),
         maxRetriesPerRequest: 50,
+        connectTimeout: 10000,
         retryStrategy: (times) => {
           const delay = Math.min(times * 50, 2000);
           return delay;
