@@ -37,39 +37,7 @@ jobs:
           # Push the Docker image to the ECR repository
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
-      - name: Logout from Amazon ECR
+      - name: Logout to Amazon ECR
         if: always()
-        run: docker logout ${{ steps.login-ecr.outputs.registry }}
+        run: docker logout ${{steps.login-ecr.outputs.registry}}
         # This step logs out of Amazon ECR to clean up credentials. Runs regardless of previous steps' success or failure
-
-      - name: Install Heroku CLI
-        run: |
-          curl https://cli-assets.heroku.com/install.sh | sh
-        # This step installs the Heroku CLI to interact with Heroku from the command line
-
-      - name: Heroku Container Login
-        run: |
-          heroku container:login
-        # This step logs in to Heroku's container registry
-
-      - name: Deploy to Heroku
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}  # Heroku API key for authentication
-          HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}  # Heroku app name to deploy to
-          STAGE: production  # Set your stage environment variable
-          PORT: 6969
-          DB_HOST: ${{ secrets.DB_HOST }}
-          DB_PORT: 5432
-          DB_USERNAME: ${{ secrets.DB_USERNAME }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          DB_DATABASE: ${{ secrets.DB_DATABASE }}
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          JWT_TOKEN_AUDIENCE: ${{ secrets.CLIENT_URL }}
-          JWT_TOKEN_ISSUER: ${{ secrets.CLIENT_URL }}
-          JWT_ACCESS_TOKEN_TTL: 36000
-          JWT_REFRESH_TOKEN_TTL: 86400
-          NODE_ENV: production
-        run: |
-          heroku container:push web --app $HEROKU_APP_NAME
-          heroku container:release web --app $HEROKU_APP_NAME
-        # This step pushes and releases the Docker image to Heroku
