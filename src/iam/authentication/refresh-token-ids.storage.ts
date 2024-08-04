@@ -18,11 +18,25 @@ export class RefreshTokenIdsStorage
 
   onApplicationBootstrap() {
     // TODO: Move to RedisModule, use envs
-    this.redisClient = new Redis({
-      host: this.configService.get('REDIS_HOST'),
-      port: this.configService.get('REDIS_PORT'),
-      password: this.configService.get<string>('REDIS_PASSWORD'),
-    });
+    try {
+      this.redisClient = new Redis({
+        name: 'redis-sinuous-67774',
+        host: this.configService.get('REDIS_HOST'),
+        port: this.configService.get('REDIS_PORT'),
+        password: this.configService.get<string>('REDIS_PASSWORD'),
+        maxRetriesPerRequest: 50,
+        retryStrategy: (times) => {
+          const delay = Math.min(times * 50, 2000);
+          return delay;
+        },
+
+        // url: this.configService.get('REDIS_URL'),
+      });
+    } catch (error) {
+      // Handle Redis connection error, e.g., log, retry, throw
+      console.error('Error connecting to Redis:', error);
+      throw error;
+    }
   }
   onApplicationShutdown() {
     return this.redisClient.quit();
