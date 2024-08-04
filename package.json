@@ -11,8 +11,8 @@
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "nest start",
-    "start:dev": "STAGE=development nest start --watch",
+   "start": "STAGE=production node dist/main.js",
+    "start:dev": "STAGE=production ts-node src/main.ts",
     "start:debug": "STAGE=development nest start --debug --watch",
     "start:prod": "STAGE=production node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",

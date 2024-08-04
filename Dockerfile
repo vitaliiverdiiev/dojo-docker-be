@@ -7,7 +7,7 @@ COPY ["package.json", "package-lock*", "./"]
 # DEVELOPMENT
 FROM base AS development
 ENV NODE_ENV=development
-RUN nom install --frozen-lockfile
+RUN npm install --frozen-lockfile
 COPY . .
 CMD ["npm", "run", "start:dev"]
 
